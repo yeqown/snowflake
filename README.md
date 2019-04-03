@@ -25,6 +25,26 @@ Each time you generate an ID, it works, like this.
 * Then the `machineID` is added in subsequent bits.
 * Then the `counter` is added, starting at 0 and incrementing for each ID generated in the same millisecond. If you generate enough IDs in the same millisecond that the sequence would roll over or overfill then the generate function will pause until the next millisecond.
 
+### Be imported as a package
+
+```go
+package main
+
+import (
+   "github.com/yeqown/snowflake"
+)
+
+func main() {
+   worker, err := snowflake.New(1)
+   if err != nil {
+      panic(err)
+   }
+
+   id := worker.Generate()
+   println(id) // id like: 1113311935803162633
+}
+```
+
 ### CLI
 
 #### `cli` help docs:
@@ -74,4 +94,4 @@ OPTIONS:
 ### References
 
 * [twitter-snowflake](https://github.com/twitter-archive/snowflake)
-* [bwmarrin/snowflake](https://github.com/bwmarrin/snowflake)
+* thanks to [bwmarrin/snowflake](https://github.com/bwmarrin/snowflake)
