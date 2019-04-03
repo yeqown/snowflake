@@ -14,8 +14,8 @@ This `Repository` is `Golang` implementation.
 ### TODO
 
 * [x] finish id-generator
-* [x] gRPC to support RPC call
-* [ ] provide command line interface
+* [ ] gRPC to support RPC call
+* [x] provide command line interface
 
 ### Generation process
 
