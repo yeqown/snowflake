@@ -27,7 +27,6 @@ func Test_Worker(t *testing.T) {
 	if mid := id.MachineID(); mid != 1 {
 		t.Errorf("wrong machineID, want: 1, got: %d", mid)
 	}
-
 }
 
 func Test_concurrent(t *testing.T) {

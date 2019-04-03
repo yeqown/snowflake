@@ -14,7 +14,7 @@ This `Repository` is `Golang` implementation.
 ### TODO
 
 * [x] finish id-generator
-* [ ] gRPC to support RPC call
+* [x] gRPC to support RPC call
 * [x] provide command line interface
 
 ### Generation process
@@ -89,6 +89,104 @@ OPTIONS:
 1113312324128604174
 ➜  snowflake git:(master) ✗ ./package/osx/snowflake gen -m 0 -c 20 -o test.txt
 ➜  snowflake git:(master) ✗
+```
+
+### RPC call
+
+[client.go](examples/grpc-client/client.go) CODE:
+
+```go
+package main
+
+import (
+	"context"
+	"log"
+
+	"github.com/yeqown/snowflake/rpc"
+	"google.golang.org/grpc"
+)
+
+func main() {
+	var (
+		err  error
+		conn *grpc.ClientConn
+	)
+
+	if conn, err = grpc.Dial("localhost:50051", grpc.WithInsecure()); err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close()
+
+	reply, err := rpc.NewWorkerClient(conn).Generate(context.Background(), &rpc.Request{Count: 10})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, v := range reply.GetID() {
+		println(v)
+	}
+}
+
+```
+
+[server.go](examples/grpc-server/server.go) CODE:
+
+```go
+package main
+
+import (
+	"log"
+	"net"
+
+	"github.com/yeqown/snowflake/rpc"
+	"google.golang.org/grpc"
+)
+
+func main() {
+	l, err := net.Listen("tcp", ":50051")
+	if err != nil {
+		log.Fatal(err)
+	}
+	// new a grpc server
+	rpcServer := grpc.NewServer()
+
+	// create a worker service and register into server
+	workerService, err := rpc.NewWorkerService(0)
+	if err != nil {
+		log.Fatal(err)
+	}
+	rpcService := rpc.WorkerServer(workerService)
+	rpc.RegisterWorkerServer(rpcServer, rpcService)
+
+	// server serve request
+	println("server initialize done! and listen on: 50051")
+	if err := rpcServer.Serve(l); err != nil {
+		log.Fatal(err)
+	}
+}
+
+```
+
+#### output
+
+```sh
+# one terminal to:
+go run server.go
+
+# another terminal to:
+go run client.go
+
+# output:
+1113437949933912064
+1113437949933912065
+1113437949933912066
+1113437949933912067
+1113437949933912068
+1113437949933912069
+1113437949933912070
+1113437949933912071
+1113437949933912072
+1113437949933912073
 ```
 
 ### References

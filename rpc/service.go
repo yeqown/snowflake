@@ -33,6 +33,11 @@ func (s *WorkerService) Generate(ctx context.Context, req *Request) (*Reply, err
 		return nil, errEmptyWorker
 	}
 
-	id := s.worker.Generate()
-	return &Reply{ID: id.Int64()}, nil
+	reply := new(Reply)
+	reply.ID = make([]int64, req.Count)
+
+	for i := int32(0); i < req.Count; i++ {
+		reply.ID[i] = s.worker.Generate().Int64()
+	}
+	return reply, nil
 }

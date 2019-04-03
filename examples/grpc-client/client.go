@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/yeqown/snowflake/rpc"
@@ -10,15 +9,22 @@ import (
 )
 
 func main() {
-	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
-	if err != nil {
+	var (
+		err  error
+		conn *grpc.ClientConn
+	)
+
+	if conn, err = grpc.Dial("localhost:50051", grpc.WithInsecure()); err != nil {
 		log.Fatal(err)
 	}
 	defer conn.Close()
-	client := rpc.NewWorkerClient(conn)
-	reply, err := client.Generate(context.Background(), &rpc.Request{Count: 1})
+
+	reply, err := rpc.NewWorkerClient(conn).Generate(context.Background(), &rpc.Request{Count: 10})
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("relpy ids: %v", reply.ID)
+
+	for _, v := range reply.GetID() {
+		println(v)
+	}
 }

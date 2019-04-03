@@ -11,5 +11,5 @@ message Request {
 }
 
 message Reply {
-    int64 ID = 1;
+    repeated int64 ID = 1;
 }

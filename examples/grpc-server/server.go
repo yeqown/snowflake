@@ -13,9 +13,10 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	// new a grpc server
 	rpcServer := grpc.NewServer()
 
+	// create a worker service and register into server
 	workerService, err := rpc.NewWorkerService(0)
 	if err != nil {
 		log.Fatal(err)
@@ -23,7 +24,8 @@ func main() {
 	rpcService := rpc.WorkerServer(workerService)
 	rpc.RegisterWorkerServer(rpcServer, rpcService)
 
-	println("done init server")
+	// server serve request
+	println("server initialize done! and listen on: 50051")
 	if err := rpcServer.Serve(l); err != nil {
 		log.Fatal(err)
 	}
