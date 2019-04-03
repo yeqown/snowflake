@@ -15,8 +15,8 @@ prepare:
 	@ - mkdir -p ${packageDir}/osx
 	@ - mkdir -p ${packageDir}/linux
 
-upload:
-	echo "upload"
+protoc:
+	protoc -I . --go_out=plugins=grpc:rpc rpc.proto
 
 clear:
 	rm -fr 

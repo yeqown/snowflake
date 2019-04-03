@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+service Worker {
+    // generate an ID and return
+    rpc Generate(Request) returns (Reply) {} 
+}
+
+
+message Request {
+    int32 count = 1;
+}
+
+message Reply {
+    int64 ID = 1;
+}
