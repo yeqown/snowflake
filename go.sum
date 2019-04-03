@@ -1,2 +1,4 @@
 github.com/bwmarrin/snowflake v0.0.0-20180412010544-68117e6bbede h1:lTJlWdyhwqq7h29GtuIDHW/xi+sMN+JOLMgYAwQ5O74=
 github.com/bwmarrin/snowflake v0.0.0-20180412010544-68117e6bbede/go.mod h1:NdZxfVWX+oR6y2K0o6qAYv6gIOP9rjG0/E9WsDpxqwE=
+github.com/urfave/cli v1.20.0 h1:fDqGv3UG/4jbVl/QkFwEdddtEDjh/5Ov6X+0B/3bPaw=
+github.com/urfave/cli v1.20.0/go.mod h1:70zkFmudgCuE/ngEzBv17Jvp/497gISqfk5gWijbERA=
