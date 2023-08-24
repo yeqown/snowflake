@@ -8,7 +8,7 @@ Snowflake is a network service for generating unique ID numbers at high scale wi
 ### Goal
 
 - [x] developing a `c` library package.
-- [ ] quickly use as a CLI appliction.
+- [x] quickly use as a CLI application.
 - [ ] extension to `lua`.
 - [ ] extension to `go`.
 
