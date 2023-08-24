@@ -66,7 +66,7 @@ int l_snowflake_new(lua_State *L) {
 
 /*
  * Usage in Lua:
- * snowflake.parse()
+ * snowflake.parse(1694728726572437513)
  */
 int l_snowflake_parse(lua_State *L) {
   if (lua_isnil(L, -1) || !lua_isinteger(L, -1)) {
@@ -98,7 +98,7 @@ int l_snowflake_parse(lua_State *L) {
 
 /*
  * Usage in lua:
- * local worker = snowflake.new(1);
+ * local worker = snowflake.new(1)
  * local id = worker.next_id()
  */
 int l_snowflake_worker_next_id(lua_State *L) {
@@ -121,7 +121,8 @@ int l_snowflake_worker_next_id(lua_State *L) {
 
 /*
  * Usage in Lua:
- * local worker = snowflake.new(1);
+ * local worker = snowflake.new(1)
+ * local ids = worker.next_ids(100)
  */
 int l_snowflake_worker_next_ids(lua_State *L) {
   if (lua_isnil(L, -1) || !lua_isinteger(L, -1)) {
