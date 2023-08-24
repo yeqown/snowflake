@@ -170,3 +170,5 @@ go.work
 
 /.idea
 /snowflake
+
+build/

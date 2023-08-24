@@ -87,14 +87,8 @@ bool acquireLock(snowflake_Worker *worker, bool wait) {
   }
 
   int expected = 0;
-
-  if (!wait) {
-    return cas(&worker->lock, &expected, 0);
-  }
-
-  while (!cas(&worker->lock, &expected, 0)) {
-    // wait for 1 millisecond
-  }
+  if (!wait) return cas(&worker->lock, &expected, 0);
+  while (!cas(&worker->lock, &expected, 0)) { /* spin */ }
 
   return true;
 }
@@ -137,7 +131,7 @@ int snowflake_NextIds(snowflake_Worker *worker, uint64_t n, snowflake_ID *ids,
     ids[i] = snowflake_NextId(worker, wait);
   }
 
-  return n;
+  return (int)n;
 }
 
 const char *snowflake_ToString(snowflake_ID id) {

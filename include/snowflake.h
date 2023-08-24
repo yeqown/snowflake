@@ -77,7 +77,7 @@ snowflake_Worker *snowflake_NewWorker(uint64_t worker_id);
  */
 void snowflake_FreeWorker(snowflake_Worker *worker);
 
-#define snowflake_ID uint64_t
+typedef uint64_t snowflake_ID;
 
 /* snowflake_NextIds
  * generate new snowflake ids with the given worker and the number of ids

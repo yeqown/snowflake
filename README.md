@@ -9,8 +9,55 @@ Snowflake is a network service for generating unique ID numbers at high scale wi
 
 - [x] developing a `c` library package.
 - [x] quickly use as a CLI application.
-- [ ] extension to `lua`.
+- [x] extension to `lua`.
 - [ ] extension to `go`.
+
+### Installation
+
+There are three ways to use `snowflake`:
+
+- [Library](#library)
+- [CLI application](#cli-application)
+- [Lua extension](#lua-extension)
+
+#### Library
+
+In this way, you can use `snowflake` as a static library in your project.
+
+```bash
+mkdir build && cd build
+cmake ..
+
+make snowflake_lib
+```
+
+Then you can copy the `build/libsnowflake.a` to your project or install it to your system manually.
+
+#### CLI application
+
+In this way, you can use `snowflake` as a CLI application.
+
+```bash
+mkdir build && cd build
+cmake ..
+
+make snowflake_cli
+```
+
+Then you can copy the `build/cmd/snowflake/snowflake` to your system path.
+
+### Lua extension
+
+In this way, you can use `snowflake` as a lua extension.
+
+```bash
+mkdir build && cd build
+cmake ..
+
+make snowflake_lua
+```
+
+Then you can copy the `build/contrib/lua/snowflake.so` to your lua `package.cpath`.
 
 ### Generation process
 
