@@ -1,16 +1,22 @@
 require "snowflake"
 
-snowflake.new()
+print("   NAME: " .. snowflake._NAME)
+print("VERSION: " .. snowflake._VERSION)
+print(" AUTHOR: " .. snowflake._AUTHOR)
 
-print("creating a worker\n\n")
-worker = snowflake.new(1)
+local worker = snowflake.new(1)
 
-print("generating one id")
-id = worker.next_id()
-print(id.. "\n\n")
+local id = worker.next_id()
+print("generating one id: " .. id .. "\n")
 
-print("generating 100 ids")
-ids = worker.next_ids(100)
+print("parsing snowflake id: " .. id)
+local state = snowflake.parse(id);
+print("timestamp: " .. state.timestamp)
+print("worker_id: " .. state.worker_id)
+print("    count: " .. state.count .. "\n")
+
+print("generating 10 ids in a batch: ")
+local ids = worker.next_ids(10)
 for i, id in ipairs(ids) do
     print(id)
 end

@@ -25,17 +25,19 @@ int l_snowflake_worker_next_ids(lua_State *L);
 
 /*
  * Usage in lua:
- * worker = snowflake.new(worker_id=1)
+ * worker = snowflake.new(1?)
  */
 int l_snowflake_new(lua_State *L) {
   // get the top value of the stack, if it's not empty and not an integer,
   // return error.
-  uint64_t worker_id;
-  if (!lua_isnil(L, 1) && !lua_isinteger(L, 1)) {
-    lua_pushstring(L, "worker_id must be an integer");
-    lua_error(L);
+  uint64_t worker_id = 0;
+  if (!lua_isnil(L, 1)) {
+    if (!lua_isinteger(L, 1)) {
+      lua_pushstring(L, "worker_id must be an integer");
+      lua_error(L);
+    }
+    worker_id = (uint64_t) lua_tointegerx(L, 1, NULL);
   }
-  worker_id = (uint64_t) lua_tointegerx(L, 1, NULL);
   if (worker_id > MAX_WORKER_ID) {
     lua_pushstring(L, "worker_id in range [0, 1023]");
     lua_error(L);
@@ -62,6 +64,10 @@ int l_snowflake_new(lua_State *L) {
   return 1;
 }
 
+/*
+ * Usage in Lua:
+ * snowflake.parse()
+ */
 int l_snowflake_parse(lua_State *L) {
   if (lua_isnil(L, -1) || !lua_isinteger(L, -1)) {
     lua_pushstring(L, "id must be an unsigned integer");
@@ -79,17 +85,22 @@ int l_snowflake_parse(lua_State *L) {
 
   lua_newtable(L);
   lua_pushinteger(L, (long long) state->timestamp);
-  lua_setfield(L, -1, "timestamp");
+  lua_setfield(L, -2, "timestamp");
 
   lua_pushinteger(L, (long long) state->worker_id);
-  lua_setfield(L, -1, "worker_id");
+  lua_setfield(L, -2, "worker_id");
 
   lua_pushinteger(L, (long long) state->count);
-  lua_setfield(L, -1, "count");
+  lua_setfield(L, -2, "count");
 
   return 1;
 }
 
+/*
+ * Usage in lua:
+ * local worker = snowflake.new(1);
+ * local id = worker.next_id()
+ */
 int l_snowflake_worker_next_id(lua_State *L) {
   snowflake_Worker *worker = (snowflake_Worker *) lua_touserdata(L, lua_upvalueindex(1));
   if (NULL == worker) {
@@ -108,6 +119,10 @@ int l_snowflake_worker_next_id(lua_State *L) {
   return 1;
 }
 
+/*
+ * Usage in Lua:
+ * local worker = snowflake.new(1);
+ */
 int l_snowflake_worker_next_ids(lua_State *L) {
   if (lua_isnil(L, -1) || !lua_isinteger(L, -1)) {
     lua_pushstring(L, "count must be an unsigned integer");
@@ -145,13 +160,22 @@ int l_snowflake_worker_next_ids(lua_State *L) {
 }
 
 int luaopen_snowflake(lua_State *L) {
-  luaL_Reg snowflake_lib[] = {
+  luaL_Reg snowflake_funcs[] = {
       {"new", l_snowflake_new},
       {"parse", l_snowflake_parse},
       {NULL, NULL}
   };
 
-  luaL_newlib(L, snowflake_lib);
+  luaL_newlib(L, snowflake_funcs);
+
+  lua_pushliteral(L, "yeqown");
+  lua_setfield(L, -2, "_AUTHOR");
+
+  lua_pushliteral(L, "lua-snowflake");
+  lua_setfield(L, -2, "_NAME");
+
+  lua_pushliteral(L, "0.1.0");
+  lua_setfield(L, -2, "_VERSION");
 
   // set snowflake as global variable
   lua_pushvalue(L, -1);

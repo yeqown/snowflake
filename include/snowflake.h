@@ -43,10 +43,10 @@
 #define MACHINE_ID_MASK (MAX_WORKER_ID << COUNT_BITS) // 1023 << 12 = 1047552
 #define COUNT_MASK (MAX_COUNT << 0)                   // 4095 << 0 = 4095
 
-#define ERR_INVALID_WORKER_ID -1 // invalid worker id
-#define ERR_NULL_WORKER -2       // worker is null
-#define ERR_NULL_IDS -3          // ids array are null
-#define ERR_LOCKED -4            // worker is locked
+#define ERR_INVALID_WORKER_ID (-1) // invalid worker id
+#define ERR_NULL_WORKER (-2)       // worker is null
+#define ERR_NULL_IDS (-3)          // ids array are null
+#define ERR_LOCKED (-4)            // worker is locked
 
 // The snowflake worker is used to generate snowflake id which is a
 // 64 bits unsigned integer.
