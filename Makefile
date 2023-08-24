@@ -1,22 +1,15 @@
-mainDir=cmd/snowflake
-packageDir=package
-target=snowflake
+CC     =     cc
+CFLAGS =     -Wall -Wextra -Werror -std=c99 -pedantic -g
+TEST   =     test
+TEST_SRC =   tests/main.c
+INCLUDE =    -I./include -I/usr/local/include
+SRC =        src/*.c
 
-default: clear prepare compile-osx compile-linux
-	@ echo done
+build-test:
+	$(CC) $(CFLAGS) -o $(TEST) $(TEST_SRC) $(INCLUDE) $(SRC)
 
-compile-osx:
-	go build -o ${packageDir}/osx/${target} ${mainDir}/*
+test: build-test
+	./$(TEST); rm -f $(TEST)
 
-compile-linux:
-	GOOS=linux GOARCH=amd64 go build -o ${packageDir}/linux/${target} ${mainDir}/*
-
-prepare:
-	@ - mkdir -p ${packageDir}/osx
-	@ - mkdir -p ${packageDir}/linux
-
-protoc:
-	protoc -I . --go_out=plugins=grpc:rpc rpc.proto
-
-clear:
-	rm -fr 
+clean:
+	rm -f $(TEST)
