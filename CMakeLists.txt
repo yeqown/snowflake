@@ -11,9 +11,10 @@ add_library(
         ${DIR_SRCS}
 )
 
+# Alias snowflake_lib to snowflake,
+# so that dependency could link library using `snowflake`
 add_library(
-        snowflake
-        ${DIR_SRCS}
+        snowflake ALIAS snowflake_lib
 )
 
 include_directories(./include)
